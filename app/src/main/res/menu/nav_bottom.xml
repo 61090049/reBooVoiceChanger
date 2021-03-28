@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/openAudioFragment"
+        android:icon="@drawable/ic_open_audio"
+        android:title="@string/open_audio" />
+
+    <item
+        android:id="@+id/presetAudioFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/preset_audio" />
+
+    <item
+        android:id="@+id/effectCatalogFragment"
+        android:icon="@drawable/ic_effect_audio"
+        android:title="@string/effect_audio" />
+
+</menu>

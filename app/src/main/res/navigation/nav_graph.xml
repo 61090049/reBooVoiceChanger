@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/presetAudioFragment">
+
+    <fragment
+        android:id="@+id/openAudioFragment"
+        android:name="com.example.dechproduct.rebooapplicationproject.fragments.OpenAudioFragment"
+        android:label="Open an Audio"
+        tools:layout="@layout/fragment_open_audio" />
+
+    <fragment
+        android:id="@+id/presetAudioFragment"
+        android:name="com.example.dechproduct.rebooapplicationproject.fragments.PresetAudioFragment"
+        android:label="Preset Audio"
+        tools:layout="@layout/fragment_preset_audio" />
+
+    <fragment
+        android:id="@+id/effectCatalogFragment"
+        android:name="com.example.dechproduct.rebooapplicationproject.fragments.EffectCatalogFragment"
+        android:label="Effect Catalog"
+        tools:layout="@layout/fragment_effect_catalog" />
+    <fragment
+        android:id="@+id/activitySoundDetailsFragment"
+        android:name="com.example.dechproduct.rebooapplicationproject.fragments.ActivitySoundDetailFragment"
+        android:label="Activity Detail"
+        tools:layout="@layout/fragment_activity_sound_details" />
+
+
+</navigation>

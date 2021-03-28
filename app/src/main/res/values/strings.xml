@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">reBooApplicationProject</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_audio">Open</string>
+    <string name="preset_audio">Preset</string>
+    <string name="effect_audio">Effect</string>
+</resources>
