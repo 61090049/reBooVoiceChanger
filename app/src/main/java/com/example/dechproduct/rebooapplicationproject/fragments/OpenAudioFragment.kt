@@ -1,60 +1,115 @@
 package com.example.dechproduct.rebooapplicationproject.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dechproduct.rebooapplicationproject.R
+import com.example.dechproduct.rebooapplicationproject.adapter.OpenAudioActivityAdapter
+import com.example.dechproduct.rebooapplicationproject.model.MockExampleDataItem
+import kotlinx.android.synthetic.main.fragment_open_audio.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [OpenAudioFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class OpenAudioFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+/* View Binding Recycler
+class OpenAudioFragment : Fragment(R.layout.fragment_open_audio) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentOpenAudioBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var mFavActivityAdapter: OpenAudioActivityAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        _binding = FragmentOpenAudioBinding.inflate(
+            inflater, container, false
+        )
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        viewModel = (activity as MainActivity).viewModel    <-- set viewModel Here
+
+        setUpRecyclerView()
+    }
+
+    private fun setUpRecyclerView() {
+
+        mFavActivityAdapter = OpenAudioActivityAdapter(this)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = mFavActivityAdapter
+        }
+        /*
+        viewModel.allFavActivities.observe(viewLifecycleOwner, { list ->
+
+            list?.let {
+                mFavActivityAdapter.differ.submitList(it)
+                updateUI(it)
+            }
+        })
+        */
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+
+}
+
+
+ */
+//Normal
+
+class OpenAudioFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_open_audio, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment OpenAudioFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OpenAudioFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val exampleDataItem = generateAudioList(500)
+        recycler_view.adapter = OpenAudioActivityAdapter(exampleDataItem)
+        recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.setHasFixedSize(true)
     }
+
+
+
+    //Mock เฉยๆ ให้ back ไป แยก algo แล้วเอาเข้า viewmodel เองเน้อ
+    private fun generateAudioList(size:Int) : List<MockExampleDataItem>{
+        val list = ArrayList <MockExampleDataItem>()
+        for (i in 0 until size){
+            val drawable = when (i%3){
+                0 -> R.drawable.ic_favorite
+                1 -> R.drawable.ic_home
+                else -> R.drawable.ic_music
+            }
+            val item = MockExampleDataItem(drawable, "Item $i", "Audio List Song Record",2,12.22)
+            list += item
+        }
+        return list
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+
 }
+

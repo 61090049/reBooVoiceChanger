@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.ActivitySoundDetailFragment">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Sound Detail" />
+        android:padding="8dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/img_open_fix"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_music"/>
+
+        <TextView
+            android:id="@+id/tv_name_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/img_open_fix"
+            android:text="First Audio"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_date_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DD/MM/YY"
+            android:layout_toEndOf="@id/img_open_fix"
+            android:layout_below="@id/tv_name_add"/>
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_play"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/tv_name_add"-->
+<!--            android:layout_alignEnd="@+id/tv_date_add"-->
+<!--            android:layout_alignBottom="@+id/tv_name_add"-->
+<!--            android:layout_marginStart="192dp"-->
+<!--            android:layout_marginTop="-28dp"-->
+<!--            android:layout_marginEnd="-233dp"-->
+<!--            android:layout_marginBottom="3dp"-->
+<!--            android:layout_toEndOf="@id/tv_name_add"-->
+<!--            android:background="transparent"-->
+<!--            android:src="@drawable/ic_play" />-->
+
+        <TextView
+            android:id="@+id/tv_time_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/tv_date_add"
+            android:gravity="end"
+            android:text="00:00" />
+
+<!--       ค่อยเอาไปใส่ใน tv_time_record
+ android:layout_below="@id/btn_play"-->
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

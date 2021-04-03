@@ -45,9 +45,9 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(
                 mNavController
         )
-
-        val appConfigBar = AppBarConfiguration(setOf(R.id.openAudioFragment))
-        setupActionBarWithNavController(mNavController, appConfigBar)
+//For Assign action bar
+//        val appConfigBar = AppBarConfiguration(setOf(R.id.openAudioFragment))
+//        setupActionBarWithNavController(mNavController, appConfigBar)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -5,4 +5,15 @@
     <string name="open_audio">Open</string>
     <string name="preset_audio">Preset</string>
     <string name="effect_audio">Effect</string>
+
+    <string name="image">image</string>
+    <string name="title">Title Name</string>
+    <string name="author">DD/MM/YY</string>
+    <string name="pitchNegative">-</string>
+    <string name="pitchPositive">+</string>
+    <string name="pitchStart">0</string>
+    <string name="pitchText">db</string>
+
+    <string name="add">Save</string>
+
 </resources>

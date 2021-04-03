@@ -27,6 +27,11 @@
         android:name="com.example.dechproduct.rebooapplicationproject.fragments.ActivitySoundDetailFragment"
         android:label="Activity Detail"
         tools:layout="@layout/fragment_activity_sound_details" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.dechproduct.rebooapplicationproject.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 
 
 </navigation>
