@@ -1,90 +1,86 @@
 package com.example.dechproduct.rebooapplicationproject.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dechproduct.rebooapplicationproject.R
 import com.example.dechproduct.rebooapplicationproject.adapter.OpenAudioActivityAdapter
+import com.example.dechproduct.rebooapplicationproject.databinding.FragmentOpenAudioBinding
 import com.example.dechproduct.rebooapplicationproject.model.MockExampleDataItem
+import com.example.dechproduct.rebooapplicationproject.viewmodel.OpenAudioViewModel
 import kotlinx.android.synthetic.main.fragment_open_audio.*
+import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collect
 
+//Normal
 
-/* View Binding Recycler
-class OpenAudioFragment : Fragment(R.layout.fragment_open_audio) {
+class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListener {
+
+    private val viewModel: OpenAudioViewModel by viewModels()
 
     private var _binding: FragmentOpenAudioBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mFavActivityAdapter: OpenAudioActivityAdapter
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentOpenAudioBinding.inflate(
-            inflater, container, false
-        )
-        return binding.root
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        viewModel = (activity as MainActivity).viewModel    <-- set viewModel Here
 
-        setUpRecyclerView()
-    }
-
-    private fun setUpRecyclerView() {
-
-        mFavActivityAdapter = OpenAudioActivityAdapter(this)
-
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = mFavActivityAdapter
-        }
-        /*
-        viewModel.allFavActivities.observe(viewLifecycleOwner, { list ->
-
-            list?.let {
-                mFavActivityAdapter.differ.submitList(it)
-                updateUI(it)
-            }
-        })
-        */
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+    private val exampleDataItem = generateAudioList(500)
+    private val adapter = OpenAudioActivityAdapter(exampleDataItem,this)
 
 
-}
-
-
- */
-//Normal
-
-class OpenAudioFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_open_audio, container, false)
+        _binding = FragmentOpenAudioBinding.inflate(
+                inflater, container, false
+        )
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val exampleDataItem = generateAudioList(500)
-        recycler_view.adapter = OpenAudioActivityAdapter(exampleDataItem)
-        recycler_view.layoutManager = LinearLayoutManager(context)
-        recycler_view.setHasFixedSize(true)
+        val binding = FragmentOpenAudioBinding.bind(view)
+
+        binding.apply {
+            recycler_view.adapter = adapter
+            recycler_view.layoutManager = LinearLayoutManager(context)
+            recycler_view.setHasFixedSize(true)
+
+            addItem.setOnClickListener{viewModel.onAddNewTaskClick()}
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.tasksEvent.collect { event ->
+                when (event){
+                    is OpenAudioViewModel.ExampleAddEvent.NavigateToPlayTaskScreen -> {
+                        val action =
+                                OpenAudioFragmentDirections.actionOpenAudioFragmentToPlayAudioFragment()
+                        findNavController().navigate(action)
+                    }
+
+
+
+                }
+            }
+        }
+
+
+
+
+
+
+
     }
 
 
@@ -98,16 +94,24 @@ class OpenAudioFragment : Fragment() {
                 1 -> R.drawable.ic_home
                 else -> R.drawable.ic_music
             }
-            val item = MockExampleDataItem(drawable, "Item $i", "Audio List Song Record",2,12.22)
+            val item = MockExampleDataItem(drawable, "Item $i", "Audio List Song Record ","12/2/22",12.22)
             list += item
         }
         return list
-
-
     }
+
+    override fun onItemClick(position: Int) {
+        Toast.makeText(context,"Item $position clicked", Toast.LENGTH_SHORT).show()
+        val clickedItem = exampleDataItem[position]
+        clickedItem.textName = "Clicked"
+        adapter.notifyItemChanged(position)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
+        _binding = null
+
     }
 
 

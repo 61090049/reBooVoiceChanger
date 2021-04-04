@@ -80,7 +80,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:id="@+id/tvCurrentTime"
@@ -100,6 +101,7 @@
             android:text="@string/pitchStart"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
+
         <TextView
             android:id="@+id/pitchText"
             android:layout_width="match_parent"
@@ -122,6 +124,14 @@
             android:textSize="15sp" />
 
     </LinearLayout>
+
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

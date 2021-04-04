@@ -9,13 +9,17 @@
         android:id="@+id/openAudioFragment"
         android:name="com.example.dechproduct.rebooapplicationproject.fragments.OpenAudioFragment"
         android:label="Open an Audio"
-        tools:layout="@layout/fragment_open_audio" />
+        tools:layout="@layout/fragment_open_audio" >
+        <action
+            android:id="@+id/action_openAudioFragment_to_playAudioFragment"
+            app:destination="@id/playAudioFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/presetAudioFragment"
         android:name="com.example.dechproduct.rebooapplicationproject.fragments.PresetAudioFragment"
         android:label="Preset Audio"
-        tools:layout="@layout/fragment_preset_audio" />
+        tools:layout="@layout/fragment_preset_audio_ckicked" />
 
     <fragment
         android:id="@+id/effectCatalogFragment"
@@ -32,6 +36,10 @@
         android:name="com.example.dechproduct.rebooapplicationproject.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/playAudioFragment"
+        android:name="com.example.dechproduct.rebooapplicationproject.fragments.PlayAudioFragment"
+        android:label="PlayAudioFragment" />
 
 
 </navigation>

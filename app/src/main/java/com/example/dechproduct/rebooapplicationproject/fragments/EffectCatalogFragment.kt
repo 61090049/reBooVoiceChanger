@@ -1,7 +1,6 @@
 package com.example.dechproduct.rebooapplicationproject.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dechproduct.rebooapplicationproject.R
 import com.example.dechproduct.rebooapplicationproject.adapter.EffectCatalogAdapter
+import com.example.dechproduct.rebooapplicationproject.model.MockEffectCatalogDataItem
 import com.example.dechproduct.rebooapplicationproject.model.MockExampleDataItem
 import kotlinx.android.synthetic.main.fragment_effect_catalog.*
 
@@ -47,15 +47,15 @@ class EffectCatalogFragment : Fragment() {
 
 
     //Mock เฉยๆ ให้ back ไป sep algo แล้วเอาเข้า viewmodel เองเน้อ
-    private fun generateAudioList(size:Int) : List<MockExampleDataItem>{
-        val list = ArrayList <MockExampleDataItem>()
+    private fun generateAudioList(size:Int) : List<MockEffectCatalogDataItem>{
+        val list = ArrayList <MockEffectCatalogDataItem>()
         for (i in 0 until size){
             val drawable = when (i%3){
                 0 -> R.drawable.ic_favorite
                 1 -> R.drawable.ic_home
                 else -> R.drawable.ic_music
             }
-            val item = MockExampleDataItem(drawable, "Item $i", "TEST EFFECT",2,12.22)
+            val item = MockEffectCatalogDataItem(drawable, "Item $i", "TEST EFFECT","Pitch 5.01")
             list += item
         }
         return list

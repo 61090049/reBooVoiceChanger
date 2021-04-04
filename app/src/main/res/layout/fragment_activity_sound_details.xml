@@ -18,55 +18,66 @@
             android:id="@+id/img_open_fix"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignTop="@+id/btn_playOpen"
+            android:layout_alignBottom="@+id/btn_playOpen"
+            android:layout_marginTop="1dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_music"/>
+            android:layout_marginBottom="-21dp"
+            android:src="@drawable/ic_music" />
+
 
         <TextView
             android:id="@+id/tv_name_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toStartOf="@+id/tv_time_record"
             android:layout_toEndOf="@id/img_open_fix"
+            android:maxLines="1"
             android:text="First Audio"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:ellipsize="end"/>
 
         <TextView
             android:id="@+id/tv_date_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DD/MM/YY"
+            android:layout_below="@id/tv_name_add"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="164dp"
             android:layout_toEndOf="@id/img_open_fix"
-            android:layout_below="@id/tv_name_add"/>
+            android:text="DD/MM/YY" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_play"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/tv_name_add"-->
-<!--            android:layout_alignEnd="@+id/tv_date_add"-->
-<!--            android:layout_alignBottom="@+id/tv_name_add"-->
-<!--            android:layout_marginStart="192dp"-->
-<!--            android:layout_marginTop="-28dp"-->
-<!--            android:layout_marginEnd="-233dp"-->
-<!--            android:layout_marginBottom="3dp"-->
-<!--            android:layout_toEndOf="@id/tv_name_add"-->
-<!--            android:background="transparent"-->
-<!--            android:src="@drawable/ic_play" />-->
+        <ImageButton
+            android:id="@+id/btn_playOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_name_add"
+            android:layout_alignBottom="@+id/tv_name_add"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="-2dp"
+            android:background="@null"
+            android:src="@drawable/ic_play" />
 
         <TextView
             android:id="@+id/tv_time_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_playOpen"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@id/tv_date_add"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="35dp"
             android:gravity="end"
             android:text="00:00" />
 
-<!--       ค่อยเอาไปใส่ใน tv_time_record
- android:layout_below="@id/btn_play"-->
+        <!--       ค่อยเอาไปใส่ใน tv_time_record
+         android:layout_below="@id/btn_play"-->
 
 
     </RelativeLayout>
