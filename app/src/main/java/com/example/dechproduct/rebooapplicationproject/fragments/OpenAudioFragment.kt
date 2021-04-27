@@ -1,11 +1,16 @@
 package com.example.dechproduct.rebooapplicationproject.fragments
 
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dechproduct.rebooapplicationproject.R
@@ -18,6 +23,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.collect
+import java.io.File
+import java.io.IOException
 
 //Normal
 
@@ -68,25 +75,15 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
                                 OpenAudioFragmentDirections.actionOpenAudioFragmentToPlayAudioFragment()
                         findNavController().navigate(action)
                     }
-
-
-
                 }
             }
         }
-
-
-
-
-
-
-
     }
 
 
-
     //Mock เฉยๆ ให้ back ไป แยก algo แล้วเอาเข้า viewmodel เองเน้อ
-    private fun generateAudioList(size:Int) : List<MockExampleDataItem>{
+    private fun generateAudioList(size:Int) : List<MockExampleDataItem> {
+        /*
         val list = ArrayList <MockExampleDataItem>()
         for (i in 0 until size){
             val drawable = when (i%3){
@@ -98,6 +95,27 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
             list += item
         }
         return list
+         */
+        var ItemList = ArrayList<MockExampleDataItem>()
+        var _ExternalStorageRoot = context?.getExternalFilesDir(null)
+        var _StoredPath = File(_ExternalStorageRoot, "path")
+        var _Call = 0
+
+        try {
+            for (Item in _StoredPath.listFiles()) {
+                var Retriever = MediaMetadataRetriever()
+                Retriever.setDataSource(context, Uri.fromFile(Item))
+                var Duration = Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+
+                ItemList.add(MockExampleDataItem(R.drawable.ic_music, "Item $_Call",
+                Item.name, Item.lastModified().toString(), Duration!!.toDouble()))
+                _Call++
+            }
+        }
+        catch(t: Throwable){
+            Toast.makeText(context,"No Items Found!", Toast.LENGTH_SHORT).show()
+        }
+        finally{return ItemList}
     }
 
     override fun onItemClick(position: Int) {
@@ -116,4 +134,3 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
 
 
 }
-

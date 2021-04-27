@@ -19,7 +19,7 @@
         android:id="@+id/presetAudioFragment"
         android:name="com.example.dechproduct.rebooapplicationproject.fragments.PresetAudioFragment"
         android:label="Preset Audio"
-        tools:layout="@layout/fragment_preset_audio_ckicked" />
+        tools:layout="@layout/fragment_preset_audio_clicked" />
 
     <fragment
         android:id="@+id/effectCatalogFragment"

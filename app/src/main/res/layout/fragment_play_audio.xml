@@ -32,15 +32,17 @@
         android:layout_marginTop="32dp"
         android:orientation="horizontal">
 
-        <TextView
+        <EditText
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/title"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:hint="File Name"
+            android:textStyle="bold"
+            android:inputType="text"
+            android:maxLines="1"/>
 
         <Button
             android:id="@+id/ibFavorite"
@@ -109,7 +111,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="3dp"
             android:gravity="start"
-            android:text="@string/pitchText"
+            android:text="Hz"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
@@ -141,15 +143,15 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/ibShuffle"
+            android:id="@+id/ibDelete"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="12dp"
             android:layout_weight="6"
             android:background="@android:color/transparent"
+            android:clickable="true"
             android:contentDescription="@string/image"
-            android:visibility="visible"
             android:src="@drawable/ic_delete"
-            android:clickable="true"/>
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/ibBackwardSong"

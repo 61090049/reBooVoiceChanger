@@ -1,8 +1,11 @@
 package com.example.dechproduct.rebooapplicationproject
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpNavBottom()                                                    //เอาไว้ set ตัวล่างเฉยๆ เสร็จละ ไม่ต้องไปปรับครัช
-
+        checkPermissions()
     }
 
     private fun setUpNavBottom() {
@@ -54,5 +57,29 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(mNavController, null)
     }
 
+    private fun checkPermissions() {
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !== PackageManager.PERMISSION_GRANTED))
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(
+                    Manifest.permission.RECORD_AUDIO
+            ), 0)
+            return
+        }
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !== PackageManager.PERMISSION_GRANTED))
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ), 0)
+            return
+        }
+        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !== PackageManager.PERMISSION_GRANTED))
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ), 0)
+            return
+        }
+
+    }
 
 }

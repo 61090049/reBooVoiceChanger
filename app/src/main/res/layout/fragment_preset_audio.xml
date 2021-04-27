@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:hint="Fill text"
+            android:hint="Preset Name"
             android:textStyle="bold"
             android:inputType="text"
             android:maxLines="1"/>
@@ -110,7 +110,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="3dp"
             android:gravity="start"
-            android:text="@string/pitchText"
+            android:text="Hz"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
@@ -134,7 +134,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/ibShuffle"
+            android:id="@+id/ibDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
