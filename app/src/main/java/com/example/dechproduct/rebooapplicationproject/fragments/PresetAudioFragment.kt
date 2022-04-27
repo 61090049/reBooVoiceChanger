@@ -6,13 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.dechproduct.rebooapplicationproject.R
 import com.example.dechproduct.rebooapplicationproject.databinding.FragmentPresetAudioBinding
-import com.example.dechproduct.rebooapplicationproject.model.Categories
 import com.example.dechproduct.rebooapplicationproject.model.Preset
 import com.example.dechproduct.rebooapplicationproject.viewmodel.PresetAudioViewModel
 import kotlinx.android.synthetic.main.fragment_preset_audio.*
@@ -24,11 +25,6 @@ class PresetAudioFragment : Fragment(R.layout.fragment_preset_audio) {
     private val binding get() =  _binding!!
     private lateinit var viewModel: PresetAudioViewModel
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,29 +32,43 @@ class PresetAudioFragment : Fragment(R.layout.fragment_preset_audio) {
         _binding = FragmentPresetAudioBinding.inflate(
             inflater, container, false
         )
-        viewModel = ViewModelProvider(this).get(PresetAudioViewModel::class.java)
-        binding.ibCover.setOnClickListener { record() }
-        binding.seekBar.setOnSeekBarChangeListener(changePitch())
-        binding.ibFavorite.setOnClickListener {addPreset()}
-        binding.ibDelete.setOnClickListener {deletePreset()}
 
         return binding.root
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpCategories()
+        viewModel = ViewModelProvider(this).get(PresetAudioViewModel::class.java)
+        binding.ibCover.setOnClickListener { record() }
+        binding.seekBar.setOnSeekBarChangeListener(changePitch())
+        binding.ibFavorite.setOnClickListener {addPreset()}
+        binding.ibDelete.setOnClickListener {deletePreset()}
+        binding.categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
 
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val preset = viewModel.presets.getPreset(position)
+                binding.seekBar.progress = preset.pitch.toInt()
+            }
+        }
+
+        setUpPresets()
     }
 
-    private fun setUpCategories(){
-        val categories = mutableListOf<String>()
-        Categories.values().forEach { categories.add(it.name) }
-        val arrayAdapter =
-            ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, categories)
-        category_spinner.adapter = arrayAdapter
-
+    private fun setUpPresets() {
+        viewModel.setLiveData()
+        viewModel.liveData.observe(viewLifecycleOwner, object : Observer<Any> {
+            override fun onChanged(o: Any?) {
+                val preset = mutableListOf<String>()
+                viewModel.presets.values().forEach { preset.add(it.name) }
+                val arrayAdapter =
+                        ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, preset)
+                category_spinner.adapter = arrayAdapter
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -88,7 +98,7 @@ class PresetAudioFragment : Fragment(R.layout.fragment_preset_audio) {
     }
 
     private fun getPreset(): Preset {
-        return Preset(binding.categorySpinner.selectedItem.toString(), getPitch(), 1f)
+        return Preset(binding.categorySpinner.selectedItem.toString(), pitch = getPitch())
     }
 
     private fun addPreset() {

@@ -4,6 +4,7 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,14 @@ import com.example.dechproduct.rebooapplicationproject.model.MockEffectCatalogDa
 import com.example.dechproduct.rebooapplicationproject.model.MockExampleDataItem
 import kotlinx.android.synthetic.main.fragment_effect_catalog.*
 import java.io.File
+import java.lang.Exception
 
 
 class EffectCatalogFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_effect_catalog, container, false)
@@ -53,6 +55,7 @@ class EffectCatalogFragment : Fragment() {
 
     //Mock เฉยๆ ให้ back ไป sep algo แล้วเอาเข้า viewmodel เองเน้อ
     private fun generateAudioList(size:Int) : List<MockEffectCatalogDataItem> {
+        /*
         val list = ArrayList<MockEffectCatalogDataItem>()
         for (i in 0 until size) {
             val drawable = when (i % 3) {
@@ -65,6 +68,38 @@ class EffectCatalogFragment : Fragment() {
         }
         return list
     }
+    */
+        var ItemList = ArrayList<MockEffectCatalogDataItem>()
+        val STORED_PATH = "/storage/emulated/0"
+        val FILES = File(STORED_PATH).listFiles()
+        val FILE_NAMES = arrayOfNulls<String>(FILES.size)
+        FILES.mapIndexed { index, item ->
+            FILE_NAMES[index] = item?.name
+        }
+        var _Call = 0
+
+        Log.w("File", FILE_NAMES.size.toString())
+        try {
+
+            for (FileName in FILE_NAMES) {
+                //Log.w("File", FileName.toString())
+                var it = File(STORED_PATH + File.separator + FileName)
+
+                if (it.extension.equals("eff")) {
+                    Log.w("File", it.toString())
+
+                    ItemList.add(MockEffectCatalogDataItem(R.drawable.ic_music, "Item $_Call", it.name, "0"))
+                    _Call++
+
+                }
+            }
+
+        } catch (t: Throwable) {
+            Toast.makeText(context, "No Items Found!", Toast.LENGTH_SHORT).show()
+        } finally {
+            return ItemList
+        }
+
 
 /*
         var ItemList = ArrayList<MockEffectCatalogDataItem>()
@@ -91,5 +126,5 @@ class EffectCatalogFragment : Fragment() {
         finally{return ItemList}
     }
 */
-
+    }
 }

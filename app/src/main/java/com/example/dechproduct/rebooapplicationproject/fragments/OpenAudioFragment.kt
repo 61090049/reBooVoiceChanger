@@ -1,10 +1,12 @@
 package com.example.dechproduct.rebooapplicationproject.fragments
 
+import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.collect
 import java.io.File
 import java.io.IOException
+import java.lang.Exception
 
 //Normal
 
@@ -36,16 +39,14 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
     private val binding get() = _binding!!
 
 
-
     private val exampleDataItem = generateAudioList(500)
-    private val adapter = OpenAudioActivityAdapter(exampleDataItem,this)
-
+    private val adapter = OpenAudioActivityAdapter(exampleDataItem, this)
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentOpenAudioBinding.inflate(
                 inflater, container, false
@@ -64,12 +65,12 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
             recycler_view.layoutManager = LinearLayoutManager(context)
             recycler_view.setHasFixedSize(true)
 
-            addItem.setOnClickListener{viewModel.onAddNewTaskClick()}
+            addItem.setOnClickListener { viewModel.onAddNewTaskClick() }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.tasksEvent.collect { event ->
-                when (event){
+                when (event) {
                     is OpenAudioViewModel.ExampleAddEvent.NavigateToPlayTaskScreen -> {
                         val action =
                                 OpenAudioFragmentDirections.actionOpenAudioFragmentToPlayAudioFragment()
@@ -82,7 +83,7 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
 
 
     //Mock เฉยๆ ให้ back ไป แยก algo แล้วเอาเข้า viewmodel เองเน้อ
-    private fun generateAudioList(size:Int) : List<MockExampleDataItem> {
+    private fun generateAudioList(size: Int): List<MockExampleDataItem> {
         /*
         val list = ArrayList <MockExampleDataItem>()
         for (i in 0 until size){
@@ -97,29 +98,49 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
         return list
          */
         var ItemList = ArrayList<MockExampleDataItem>()
-        var _ExternalStorageRoot = context?.getExternalFilesDir(null)
-        var _StoredPath = File(_ExternalStorageRoot, "path")
-        var _Call = 0
+        val STORED_PATH = "/storage/emulated/0"
+        val FILES = File(STORED_PATH).listFiles()
+        val FILE_NAMES = arrayOfNulls<String>(FILES.size)
+        FILES.mapIndexed { index, item ->
+            FILE_NAMES[index] = item?.name}
+            var _Call = 0
 
+        Log.w("File", FILE_NAMES.size.toString())
         try {
-            for (Item in _StoredPath.listFiles()) {
-                var Retriever = MediaMetadataRetriever()
-                Retriever.setDataSource(context, Uri.fromFile(Item))
-                var Duration = Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
 
-                ItemList.add(MockExampleDataItem(R.drawable.ic_music, "Item $_Call",
-                Item.name, Item.lastModified().toString(), Duration!!.toDouble()))
-                _Call++
+            for (FileName in FILE_NAMES) {
+
+                var it = File(STORED_PATH + File.separator + FileName)
+
+                if(it.extension.equals("3gp")){
+                    Log.w("File", it.toString())
+
+                    var File_Duration = "0"
+                    try{
+                        var Retriever = MediaMetadataRetriever()
+                        Retriever.setDataSource(context, Uri.fromFile(it))
+                        File_Duration = Retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toString()
+                    }
+                    catch (e:Exception){
+                    }
+                    finally{
+                        ItemList.add(MockExampleDataItem(R.drawable.ic_music, "Item $_Call",
+                                it.name, it.lastModified().toString(), File_Duration!!.toDouble()))
+                        _Call++
+                    }
+                }
             }
+
+        } catch (t: Throwable) {
+            Toast.makeText(context, "No Items Found!", Toast.LENGTH_SHORT).show()
+        } finally {
+            return ItemList
         }
-        catch(t: Throwable){
-            Toast.makeText(context,"No Items Found!", Toast.LENGTH_SHORT).show()
-        }
-        finally{return ItemList}
+
     }
 
     override fun onItemClick(position: Int) {
-        Toast.makeText(context,"Item $position clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Item $position clicked", Toast.LENGTH_SHORT).show()
         val clickedItem = exampleDataItem[position]
         clickedItem.textName = "Clicked"
         adapter.notifyItemChanged(position)
@@ -129,8 +150,8 @@ class OpenAudioFragment : Fragment(), OpenAudioActivityAdapter.OnItemClickListen
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-
     }
-
-
 }
+
+
+

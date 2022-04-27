@@ -5,8 +5,11 @@ import android.media.MediaRecorder;
 import android.media.PlaybackParams;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,11 +33,11 @@ public class MediaController {
             DIR.mkdirs();
 
          */
+        _temp_audio = new Audio(Environment.getExternalStorageDirectory().getAbsolutePath() + TEMP_FILENAME);
     }
 
     public void startRecord(){
         try{
-            _temp_audio = new Audio(Environment.getExternalStorageDirectory().getAbsolutePath() + TEMP_FILENAME);
             //File.createTempFile("Audio",".3gp", new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS).getAbsolutePath()));
 
             _recorder = new MediaRecorder();
@@ -64,16 +67,18 @@ public class MediaController {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void startPlayback(Preset preset){
+    public void startPlayback(Preset preset, Float speed){
         try{
             _player = new MediaPlayer();
             PlaybackParams Parameters = new PlaybackParams();
             Parameters.setPitch(preset.getPitch());
-            Parameters.setSpeed(preset.getSpeed());
+            Parameters.setSpeed(speed);
 
             _player.setDataSource(_temp_audio.getPath());
             _player.prepare();
             _player.setPlaybackParams(Parameters);
+            _player.setVolume(.8f,.8f);
+            this.looping();
             _player.start();
         }
         catch (Exception e) {
@@ -94,15 +99,43 @@ public class MediaController {
     }
 
     public void saveToDevice(String Name) throws IOException {
+
+        Log.w("File", Boolean.toString(_temp_audio.getFile().exists()));
+        String Destination_Path = "";
+
         try (InputStream Writer = new FileInputStream(_temp_audio.getFile())) {
-            try (OutputStream out = new FileOutputStream(_temp_audio.getFile().getAbsolutePath()+Name+".prs")) {
+            Destination_Path = _temp_audio.getFile().getParentFile().getAbsolutePath() +
+                    File.separator +Name+".3gp";
+            try (OutputStream out = new FileOutputStream(Destination_Path)) {
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = Writer.read(buf)) > 0) {
                     out.write(buf, 0, len);
                 }
+                out.close();
             }
         }
+        finally {
+            Log.w("File", Destination_Path);
+            Log.w("File", _temp_audio.getPath());
+            Log.w("File", Boolean.toString(new File(Destination_Path).exists()));
+        }
+
+    }
+
+    public void removeFromDevice(String FileName) throws IOException{
+        String Source_Path = _temp_audio.getFile().getParentFile().getAbsolutePath() +
+                File.separator + FileName + ".3gp";
+        try{
+            File TargetFile = new File(Source_Path);
+            if(TargetFile.exists()){
+                TargetFile.delete();
+            }
+        }
+        catch (Exception e){}
+    }
+
+    public void readAudio(String Name) throws IOException {
 
     }
 
